@@ -46,7 +46,18 @@ def test_videos():
 
 
 def test_news():
-    results = DDGS().news("tesla", max_results=30)
+    results = DDGS( 
+        # proxy='socks5h://192.168.29.65:32090'
+        # proxy='socks5h://0.0.0.0:9050'
+        # proxies={
+        #     'http': 'socks5h://0.0.0.0:9050',
+        #     'https': 'socks5h://0.0.0.0:9050'
+        # }
+        proxies={
+            'http': 'socks5h://192.168.29.65:32090',
+            'https': 'socks5h://192.168.29.65:32090'
+        }
+    ).news("tesla", max_results=30)
     print(results)
     assert 20 <= len(results) <= 30     
 
