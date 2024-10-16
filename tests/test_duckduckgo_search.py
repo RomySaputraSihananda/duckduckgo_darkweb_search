@@ -2,7 +2,7 @@ import time
 import pytest
 
 from duckduckgo_search import DDGS
-
+from loguru import logger
 
 @pytest.fixture(autouse=True)
 def pause_between_tests():
@@ -23,8 +23,8 @@ def test_chat(model):
 def test_text():
     results = DDGS(
         proxies={
-            'http': 'socks5h://0.0.0.0:9050',
-            'https': 'socks5h://0.0.0.0:9050'
+            'http': 'socks5h://192.168.29.65:32090',
+            'https': 'socks5h://192.168.29.65:32090'
         }
     ).text("cat", safesearch="off", timelimit="m", max_results=30)
     print(results)
@@ -34,8 +34,8 @@ def test_text():
 def test_text_html():
     results = DDGS(
         proxies={
-            'http': 'socks5h://0.0.0.0:9050',
-            'https': 'socks5h://0.0.0.0:9050'
+            'http': 'socks5h://192.168.29.65:32090',
+            'https': 'socks5h://192.168.29.65:32090'
         }
     ).text("eagle", backend="html", max_results=30)
     print(results)
@@ -102,3 +102,50 @@ def test_translate():
         }
     ]
     assert all(er in results for er in expected_results)
+
+from concurrent.futures import ThreadPoolExecutor, Future
+from typing import Union
+
+def test_limit():
+    ddgs: DDGS = DDGS(
+        proxies={
+            'http': 'socks5h://192.168.29.65:32090',
+            'https': 'socks5h://192.168.29.65:32090'
+        }
+    )
+
+    def target(
+        count: int
+    ) -> Union[list[dict[str, str]], None]:
+        try:
+            data: list[dict[str, str]] = ddgs\
+                .text(
+                    'eagle', 
+                    backend="html", 
+                    max_results=30
+                )
+            logger.success(
+                '[%d] --> %d' % (count, len(data))
+            )
+            return data
+        except BaseException as e:
+            logger.error(e)
+            return
+
+    with ThreadPoolExecutor(
+        max_workers=10
+    ) as w:
+        futures: list[Future]
+        count: int = 1
+
+        while(True):
+            futures.append(
+                w.submit(
+                    target,
+                    count
+                )
+            )
+            count += 1
+
+    for future in futures:
+        future.result()
