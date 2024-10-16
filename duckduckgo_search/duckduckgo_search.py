@@ -207,7 +207,7 @@ class DDGS:
         keywords: str,
         region: str = "wt-wt",
         safesearch: str = "moderate",
-        timelimit: str | None = None,
+        timelimit: str | None = None,   
         backend: str = "api",
         max_results: int | None = None,
     ) -> list[dict[str, str]]:
@@ -220,8 +220,8 @@ class DDGS:
             timelimit: d, w, m, y. Defaults to None.
             backend: api, html, lite. Defaults to api.
                 api - collect data from https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion,
-                html - collect data from https://html.duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion,
-                lite - collect data from https://lite.duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion.
+                html - collect data from https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion,
+                lite - collect data from https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion.
             max_results: max number of results. If None, returns results only from the first response. Defaults to None.
 
         Returns:
@@ -373,7 +373,7 @@ class DDGS:
 
         def _text_html_page(s: int) -> list[dict[str, str]]:
             payload["s"] = f"{s}"
-            resp_content = self._get_url("POST", "https://html.duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/html", data=payload)
+            resp_content = self._get_url("POST", "https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/html", data=payload)
             if b"No  results." in resp_content:
                 return []
 
@@ -460,7 +460,7 @@ class DDGS:
 
         def _text_lite_page(s: int) -> list[dict[str, str]]:
             payload["s"] = f"{s}"
-            resp_content = self._get_url("POST", "https://lite.duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/lite/", data=payload)
+            resp_content = self._get_url("POST", "https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/lite/", data=payload)
             if b"No more results." in resp_content:
                 return []
 

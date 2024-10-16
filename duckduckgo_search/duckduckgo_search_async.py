@@ -70,8 +70,8 @@ class AsyncDDGS(DDGS):
             timelimit: d, w, m, y. Defaults to None.
             backend: api, html, lite. Defaults to api.
                 api - collect data from https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion,
-                html - collect data from https://html.duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion,
-                lite - collect data from https://lite.duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion.
+                html - collect data from https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion,
+                lite - collect data from https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion.
             max_results: max number of results. If None, returns results only from the first response. Defaults to None.
 
         Returns:

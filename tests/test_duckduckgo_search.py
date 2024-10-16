@@ -21,12 +21,24 @@ def test_chat(model):
 
 
 def test_text():
-    results = DDGS().text("cat", safesearch="off", timelimit="m", max_results=30)
+    results = DDGS(
+        proxies={
+            'http': 'socks5h://0.0.0.0:9050',
+            'https': 'socks5h://0.0.0.0:9050'
+        }
+    ).text("cat", safesearch="off", timelimit="m", max_results=30)
+    print(results)
     assert 27 <= len(results) <= 30
 
 
 def test_text_html():
-    results = DDGS().text("eagle", backend="html", max_results=30)
+    results = DDGS(
+        proxies={
+            'http': 'socks5h://0.0.0.0:9050',
+            'https': 'socks5h://0.0.0.0:9050'
+        }
+    ).text("eagle", backend="html", max_results=30)
+    print(results)
     assert 27 <= len(results) <= 30
 
 
