@@ -299,7 +299,7 @@ class DDGS:
 
         def _text_api_page(s: int) -> list[dict[str, str]]:
             payload["s"] = f"{s}"
-            resp_content = self._get_url("GET", "https://links.duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/d.js", params=payload)
+            resp_content = self._get_url("GET", "https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/d.js", params=payload)
             page_data = _text_extract_json(resp_content, keywords)
             page_results = []
             for row in page_data:

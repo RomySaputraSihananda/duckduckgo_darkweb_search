@@ -2,7 +2,6 @@ import time
 import pytest
 
 from duckduckgo_search import DDGS
-from loguru import logger
 
 @pytest.fixture(autouse=True)
 def pause_between_tests():
@@ -30,7 +29,6 @@ def test_text():
     print(results)
     assert 27 <= len(results) <= 30
 
-
 def test_text_html():
     results = DDGS(
         proxies={
@@ -48,7 +46,12 @@ def test_text_lite():
 
 
 def test_images():
-    results = DDGS().images("flower", max_results=200)
+    results = DDGS(
+        proxies={
+            'http': 'socks5h://192.168.29.65:32090',
+            'https': 'socks5h://192.168.29.65:32090'
+        }
+    ).images("flower", max_results=200)
     assert 85 <= len(results) <= 200
 
 
@@ -102,50 +105,3 @@ def test_translate():
         }
     ]
     assert all(er in results for er in expected_results)
-
-from concurrent.futures import ThreadPoolExecutor, Future
-from typing import Union
-
-def test_limit():
-    ddgs: DDGS = DDGS(
-        proxies={
-            'http': 'socks5h://192.168.29.65:32090',
-            'https': 'socks5h://192.168.29.65:32090'
-        }
-    )
-
-    def target(
-        count: int
-    ) -> Union[list[dict[str, str]], None]:
-        try:
-            data: list[dict[str, str]] = ddgs\
-                .text(
-                    'eagle', 
-                    backend="html", 
-                    max_results=30
-                )
-            logger.success(
-                '[%d] --> %d' % (count, len(data))
-            )
-            return data
-        except BaseException as e:
-            logger.error(e)
-            return
-
-    with ThreadPoolExecutor(
-        max_workers=10
-    ) as w:
-        futures: list[Future]
-        count: int = 1
-
-        while(True):
-            futures.append(
-                w.submit(
-                    target,
-                    count
-                )
-            )
-            count += 1
-
-    for future in futures:
-        future.result()

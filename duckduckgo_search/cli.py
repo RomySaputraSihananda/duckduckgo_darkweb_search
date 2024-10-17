@@ -32,7 +32,7 @@ COLORS = {
     12: "bright_magenta",
     13: "bright_cyan",
     14: "white",
-    15: "bright_white",
+    15: "bright_white"
 }
 
 
